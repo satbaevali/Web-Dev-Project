@@ -12,4 +12,4 @@ This project integrates with Kaspi Store using Django, Django REST Framework, an
 ## Team Members  
 - Satbay Alihan  
 - Abdresh Akniet
-- Zhaksybaev Aibar
+- Zhaxybayev Aibar
