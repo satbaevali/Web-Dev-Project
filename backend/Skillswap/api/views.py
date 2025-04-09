@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from .models import Skill, skill,SkillCategory,SwapRequest,TeachingOffer,User
+from .models import Skill,SkillCategory,SwapRequest,TeachingOffer,User
 from .serializers import SkillSerializer, UserSerializer,SkillCategory,SkillCategorySerializers,SwapRequestSerializer,TeachingOfferSerializer
 from rest_framework.response import Response
 @api_view(['GET'])
