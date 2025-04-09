@@ -1,0 +1,28 @@
+:root {
+  --primary-color: #000000;
+  --text-color: #18181B;
+  --text-color-muted: #52525B;
+  --secondary-text-color: #FFFFFF;
+  --background-color: #FFFFFF;
+  --box-color: #EDEAE5;
+
+  --control-height: 38px;
+  --font: "Plus Jakarta Sans", sans-serif;
+}
+
+* {
+font-family: var(--font);
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+a {
+color: var(--primary-color);
+}
+
+body {
+background-color: var(--background-color);
+font-weight: 400;
+color: var(--text-color);
+}

@@ -1,0 +1,28 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 230px;
+    margin-bottom: 20px;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+}
+
+.imageContainer img{
+    width: 100%;
+}
+
+.bookInformation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title {
+    font-size: 19px;
+}

@@ -1,0 +1,33 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 35px 25px 50px; 
+    align-items: center;
+}
+
+.school {
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.team {
+    font-size: 18px;
+    word-spacing: 4px;
+}
+
+.span {
+    font-weight: 800;
+}
+
+@media screen and (max-width:1024px){
+    
+    .school {
+        font-size: 14px;
+    }
+    
+    .team {
+        font-size: 14px;
+    }
+    
+}

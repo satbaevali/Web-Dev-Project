@@ -1,0 +1,18 @@
+.commonButtom {
+    padding: 0 25px;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    height: var(--control-height);
+    background-color: var(--primary-color);
+    color: var(--secondary-text-color);
+    transition: 0.3s;
+    }
+  
+    .commonButtom:hover {
+      width: 120px;
+    }
+    

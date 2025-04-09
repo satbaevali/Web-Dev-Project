@@ -1,0 +1,65 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 100px;
+    padding: 50px 150px;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.secondaryText {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--text-color-muted);
+    text-align: center;
+}
+
+.primaryText {
+    font-size: 45px;
+    font-weight: 800;
+    text-align: center;
+    max-width: 350px;
+}
+
+.gradientText {
+    background: -webkit-linear-gradient(45deg, #9A1F3F, #FFBE94);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heroImage {
+    width: 100%;
+}
+
+@media screen and (max-width:1024px){
+
+    .wrapper {
+        justify-content: center;
+        gap: 50px;
+    }
+
+    .secondaryText {
+        font-size: 15px;
+    }
+    
+    .primaryText {
+        font-size: 35px;
+    }
+
+    .heroImage {
+        width: 80%;
+    }
+    
+}

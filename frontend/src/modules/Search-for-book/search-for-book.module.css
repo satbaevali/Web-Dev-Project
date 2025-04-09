@@ -1,0 +1,50 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    padding: 50px 150px;
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputContainer {
+    width: 60%;
+    padding: 10px;
+}
+
+.imageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    gap: 20px;
+}
+
+.searchImage {
+    width: 100%;
+}
+
+@media screen and (max-width:1024px){
+    
+    .wrapper {
+        padding: 50px 80px;
+    }
+    
+}
+
+@media screen and (max-width:820px){
+    
+    .wrapper {
+        padding: 20px 50px;
+    }
+
+    .inputContainer {
+        padding: 40px;
+    }
+    
+}

@@ -1,0 +1,43 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 150px;
+}
+
+.bookContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    height: auto;
+    gap: 30px;
+    min-height: 38rem;
+    margin-top: 35px;
+}
+
+@media screen and (max-width:1220px){
+    
+    .bookContainer {
+        grid-template-columns: repeat(3, 300px);
+    }
+    
+}
+
+@media screen and (max-width: 840px){
+    
+    .bookContainer {
+        grid-template-columns: repeat(3, 250px);
+    }
+    
+}
+
+@media screen and (max-width: 780px){
+    
+    .bookContainer {
+        grid-template-columns: repeat(2, 250px);
+    }
+    
+}
+
+
+
