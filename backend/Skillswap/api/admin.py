@@ -1,20 +1,34 @@
 # admin.py
 
 from django.contrib import admin
-from .models import User,SkillCategory,Skill,TeachingOffer,LearningRequest,SwapRequest
-
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email', 'first_name', 'last_name', 'date_joined', 'last_login')
-    search_fields = ('name', 'email', 'first_name', 'last_name')
-    readonly_fields = ('date_joined', 'last_login') 
-    readonly_fields = ('date_joined', 'last_login', 'password')
+from .models import SkillCategory,Skill,TeachingOffer,LearningRequest,SwapRequest
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from accounts.models import User
+from .models import Review
+class UserAdmin(BaseUserAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    search_fields = ('username', 'first_name', 'last_name', 'email')
     fieldsets = (
-        (None, {'fields': ('name', 'email', 'password')}), 
-        ('Personal info', {'fields': ('first_name', 'last_name', 'bio', 'profile_picture')}),
-        ('Permissions', {'fields': ()}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        (None, {"fields": ("username", "password")}),
+        (("Personal info"), {"fields": ("first_name", "last_name", "email", "bio", "profile_picture")}),
+        (
+            ("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        (("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
+
+admin.site.register(User, UserAdmin)
+
 
 @admin.register(SkillCategory)
 class SkillCategoryAdmin(admin.ModelAdmin):
@@ -41,7 +55,7 @@ class TeachingOfferAdmin(admin.ModelAdmin):
 
     
     def user_info(self, obj):
-        return f"{obj.user.name} (ID: {obj.user.id})" 
+        return f"{obj.user.username} (ID: {obj.user.id})" 
     user_info.short_description = 'User'
 
 
@@ -57,7 +71,7 @@ class LearningRequestAdmin(admin.ModelAdmin):
     list_select_related = ('user', 'skill')
 
     def user_info(self, obj):
-        return f"{obj.user.name} (ID: {obj.user.id})" 
+        return f"{obj.user.username} (ID: {obj.user.id})" 
     user_info.short_description = 'User'
 
 
@@ -72,13 +86,15 @@ class SwapRequestAdmin(admin.ModelAdmin):
     list_select_related = ('requester', 'provider', 'offer', 'offer__skill')
 
     def requester_info(self, obj):
-        return f"{obj.requester.name} (ID: {obj.requester.id})"
+        return f"{obj.requester.username} (ID: {obj.requester.id})"
     requester_info.short_description = 'Requester'
 
     def provider_info(self, obj):
-         return f"{obj.provider.name} (ID: {obj.provider.id})"
+         return f"{obj.provider.username} (ID: {obj.provider.id})"
     provider_info.short_description = 'Provider'
 
     def offer_skill_name(self, obj):
         return obj.offer.skill.name
     offer_skill_name.short_description = 'Skill Offered'
+
+admin.site.register(Review)

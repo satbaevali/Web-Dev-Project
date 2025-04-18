@@ -1,81 +1,115 @@
-from django.http import Http404
-from django.shortcuts import render
-from rest_framework import permissions, status
+from rest_framework import viewsets, permissions, generics, status
+from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from .models import Skill,SkillCategory,SwapRequest,TeachingOffer,User
-from .serializers import SkillSerializer, UserSerializer,SkillCategory,SkillCategorySerializers,SwapRequestSerializer,TeachingOfferSerializer
-from rest_framework.response import Response
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
-def list_active_teaching_offers(request):
-    if request.method == 'GET':
-        active_offers = TeachingOffer.objects.filter(status='active').select_related(
-            'user','skill'
+from django.http import Http404
+from api import models
+from rest_framework.decorators import action
+
+
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+from .models import SkillCategory, Skill, TeachingOffer, LearningRequest, SwapRequest
+from accounts.models import User
+
+from .serializers import (
+    UserSerializer,
+    ProfileSerializer,
+    SkillCategorySerializer,
+    SkillSerializer,
+    TeachingOfferSerializer,
+    LearningRequestSerializer,
+    SwapRequestSerializer
+)
+
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {"message": "User registered successfully", "user_id": user.id, "username": user.username},
+            status=status.HTTP_201_CREATED
         )
-        serializer = TeachingOfferSerializer(active_offers,many = True)
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+class SkillCategoryViewSet(viewsets.ModelViewSet):
+    queryset = SkillCategory.objects.all()
+    serializer_class = SkillCategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all().select_related('category')
+    serializer_class = SkillSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class TeachingOfferViewSet(viewsets.ModelViewSet):
+    queryset = TeachingOffer.objects.all().select_related('user', 'skill')
+    serializer_class = TeachingOfferSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ['status'] # Add filter for status
+
+    @action(detail=False, methods=['get'])
+    def active(self, request):
+        active_offers = self.get_queryset().filter(status='active')
+        serializer = self.get_serializer(active_offers, many=True)
         return Response(serializer.data)
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def create_swap_request(request):
-    if request.method == 'POST':
-
-        serializer = SwapRequestSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-     
-            try:
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                 return Response({"error": f"error for save {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class SkillCategoryListCreateAPIView(APIView):
- 
-    permission_classes = [permissions.IsAuthenticated]
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-    def get(self, request, format=None):
- 
-        categories = SkillCategory.objects.all()
+class LearningRequestViewSet(viewsets.ModelViewSet):
+    queryset = LearningRequest.objects.all().select_related('user', 'skill')
+    serializer_class = LearningRequestSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filterset_fields = ['status'] 
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     
-        serializer = SkillCategorySerializers(categories, many=True, context={'request': request})
+    @action(detail=False, methods=['get'])
+    def active(self, request):
+        active_offers = self.get_queryset().filter(status='active')
+        serializer = self.get_serializer(active_offers, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
-       
-        serializer = SkillCategorySerializers(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return LearningRequest.objects.filter(user=user)
+        return LearningRequest.objects.none()
 
-class SkillDetailAPIView(APIView):
- 
-    permission_classes = [permissions.IsAuthenticated]
+class SwapRequestViewSet(viewsets.ModelViewSet):
+    queryset = SwapRequest.objects.all().select_related('requester', 'provider', 'offer')
+    serializer_class = SwapRequestSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get_object(self, pk):
-        try:
-            return Skill.objects.get(pk=pk)
-        except Skill.DoesNotExist:
-            raise Http404
+    def perform_create(self, serializer):
+        serializer.save(requester=self.request.user)
 
-    def get(self, request, pk, format=None):
-        skill = self.get_object(pk)
-        serializer = SkillSerializer(skill, context={'request': request})
-        return Response(serializer.data)
-
-    def put(self, request, pk, format=None):
-
-        skill = self.get_object(pk)
-        serializer = SkillSerializer(skill, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-    def delete(self, request, pk, format=None):
-        skill = self.get_object(pk)
-        skill.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return SwapRequest.objects.filter(
+                models.Q(requester=user) | models.Q(provider=user)
+            ).distinct()
+        return SwapRequest.objects.none()
