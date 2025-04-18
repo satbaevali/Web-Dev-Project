@@ -31,8 +31,12 @@ class CustomUserCreationForm(BaseUserCreationForm):
         user.email = self.cleaned_data["email"]
         if commit:
             user.save()
-            self.cleaned_data['skills'] and user.skills.set(self.cleaned_data['skill'])  # Привязка скиллов
+            # Ensure 'skill' is set as a related manager, using 'set()' for a many-to-many relationship
+            if self.cleaned_data['skill']:
+                user.skill.set(self.cleaned_data['skill'])  # Correctly associate the skills
         return user
+
+    
 
 from django import forms
 from .models import User, Skill  # Убедись, что Skill импортирован
