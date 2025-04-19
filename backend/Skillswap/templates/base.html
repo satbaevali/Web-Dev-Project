@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication</title>
+    <link rel="stylesheet" href="{% static 'static/css/profile.css' %}">
+</head>
+<body class="container">
+    <ul class="list-group">
+        <li class="list-group-item"> 
+            User : {{ user }}
+        </li>
+        <li class="list-group-item"> 
+            <a href="{% url 'home' %}">HOME</a>
+        </li>
+    </ul>
+
+    {% if user.is_authenticated %}
+    <nav>
+        <ul>
+            <li><a href="{% url 'profile' %}">Профиль</a></li>
+            <li><a href="{% url 'edit_profile' %}">Редактировать профиль</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Выход</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+    
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

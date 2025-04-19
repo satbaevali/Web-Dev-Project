@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Регистрация</h1> {# Изменил на русский для единообразия #}
+    <hr>
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %} {# Токен лучше размещать в начале формы #}
+        
+        {{ form.as_p }} {# Отображение полей формы, обернутых в <p> #}
+        
+        <button type="submit" class="btn btn-success">Зарегистрироваться</button> {# Изменил текст кнопки #}
+    </form>
+{% endblock content %}
