@@ -1,48 +1,65 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from django.contrib.auth import get_user_model
-from django import forms
-from api.models import Skill
+
+# Убедитесь, что вы импортируете модель Skill из правильного места (вашего приложения Application)
+from Application.models import Skill
 
 
 User = get_user_model()
 
-from api.models import Skill  # Убедись, что путь правильный
-
 class CustomUserCreationForm(BaseUserCreationForm):
-    first_name = forms.CharField(max_length=150, required=False, label='Name')
-    last_name = forms.CharField(max_length=150, required=False, label='SureName')
+    # Поля first_name, last_name, email могут быть необязательными при создании пользователя в базовом классе,
+    # но здесь они явно определены. Используйте required=True если они обязательны.
+    first_name = forms.CharField(max_length=150, required=False, label='Имя')
+    last_name = forms.CharField(max_length=150, required=False, label='Фамилия')
     email = forms.EmailField(required=True, label='Email')
-    
-    skill = forms.ModelMultipleChoiceField(
+
+    # ИЗМЕНЕНО: Используйте ModelChoiceField для ForeignKey
+    skill = forms.ModelChoiceField(
         queryset=Skill.objects.all(),
-        widget=forms.SelectMultiple,
-        required=False,
-        label='Навыки'
+        required=False, # Соответствует null=True в модели
+        label='Основной навык' # Изменена метка для ясности
     )
 
     class Meta(BaseUserCreationForm.Meta):
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'skill', 'password1', 'password2')
+        # Указываем поля, которые обрабатывает эта форма.
+        # Password поля обрабатываются базовым классом.
+        fields = ('username', 'email', 'first_name', 'last_name', 'skill')
+
 
     def save(self, commit=True):
+        # Создаем пользователя без сохранения сразу в базу
         user = super().save(commit=False)
-        user.first_name = self.cleaned_data["first_name"]
-        user.last_name = self.cleaned_data["last_name"]
-        user.email = self.cleaned_data["email"]
+
+        # Присваиваем данные из очищенных данных формы
+        user.first_name = self.cleaned_data.get("first_name", "") # Используем .get() для необязательных полей
+        user.last_name = self.cleaned_data.get("last_name", "")   # Используем .get()
+        user.email = self.cleaned_data["email"] # Email обычно обязателен
+
+        # ИЗМЕНЕНО: Правильное присваивание для ForeignKey поля skill
+        # self.cleaned_data['skill'] содержит экземпляр Skill или None
+        user.skill = self.cleaned_data.get("skill", None) # <-- ЭТА СТРОКА ПРАВИЛЬНО ПРИСВАИВАЕТ НАВЫК
+
+        # УДАЛЕНА СТРОКА, ВЫЗЫВАЮЩАЯ ОШИБКУ Many-to-Many логики.
+
         if commit:
             user.save()
-            self.cleaned_data['skills'] and user.skills.set(self.cleaned_data['skill'])  # Привязка скиллов
+
         return user
 
-from django import forms
-from .models import User, Skill  # Убедись, что Skill импортирован
+# Убедитесь, что Skill импортирован здесь, если это отдельный файл forms.py
+# from .models import User # Убедитесь, что User импортирован
 
 class ProfileEditForm(forms.ModelForm):
-    skill = forms.ModelMultipleChoiceField(
+    # ИЗМЕНЕНО: Используйте ModelChoiceField для ForeignKey
+    skill = forms.ModelChoiceField( # <-- ИЗМЕНЕНО
         queryset=Skill.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-        label='Skills'  
+        # Виджет можно оставить Select или изменить на RadioSelect, но не CheckboxSelectMultiple для ModelChoiceField
+        # widget=forms.Select, # Пример
+        required=False, # Соответствует null=True в модели
+        label='Основной навык' # Изменена метка
     )
 
     class Meta:
@@ -50,4 +67,8 @@ class ProfileEditForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'bio', 'skill', 'profile_picture']
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 4}),
+            # Если profile_picture это URLField и вы хотите текстовое поле:
+            # 'profile_picture': forms.URLInput(),
         }
+        # Если у вас была проблема с email being read-only в ModelForm,
+        # уберите его из fields или переопределите поле явно.
