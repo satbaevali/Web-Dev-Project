@@ -24,33 +24,25 @@ class CustomUserCreationForm(BaseUserCreationForm):
 
     class Meta(BaseUserCreationForm.Meta):
         model = User
-        # Указываем поля, которые обрабатывает эта форма.
-        # Password поля обрабатываются базовым классом.
+      
         fields = ('username', 'email', 'first_name', 'last_name', 'skill')
 
 
     def save(self, commit=True):
-        # Создаем пользователя без сохранения сразу в базу
+   
         user = super().save(commit=False)
 
         # Присваиваем данные из очищенных данных формы
         user.first_name = self.cleaned_data.get("first_name", "") # Используем .get() для необязательных полей
         user.last_name = self.cleaned_data.get("last_name", "")   # Используем .get()
         user.email = self.cleaned_data["email"] # Email обычно обязателен
-
-        # ИЗМЕНЕНО: Правильное присваивание для ForeignKey поля skill
-        # self.cleaned_data['skill'] содержит экземпляр Skill или None
         user.skill = self.cleaned_data.get("skill", None) # <-- ЭТА СТРОКА ПРАВИЛЬНО ПРИСВАИВАЕТ НАВЫК
-
-        # УДАЛЕНА СТРОКА, ВЫЗЫВАЮЩАЯ ОШИБКУ Many-to-Many логики.
 
         if commit:
             user.save()
 
         return user
 
-# Убедитесь, что Skill импортирован здесь, если это отдельный файл forms.py
-# from .models import User # Убедитесь, что User импортирован
 
 class ProfileEditForm(forms.ModelForm):
     # ИЗМЕНЕНО: Используйте ModelChoiceField для ForeignKey

@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'corsheaders',
+<<<<<<< HEAD
+=======
+
+>>>>>>> 923b7e74aa52c6ad7c42b9ea8d038dfd98d71b79
 
 ]
 
@@ -60,6 +64,7 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'Skillswap.urls'
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {

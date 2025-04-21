@@ -25,6 +25,7 @@ export class SkillServiceService {
     })
   }
 
+
   getSkillCategories():Observable<SkillCategory[]>{
     return this.httpClient.get<SkillCategory[]>('http://localhost:8000/api/api/skill-categories/')
   }
@@ -32,7 +33,5 @@ export class SkillServiceService {
   getSkillDetail(): Observable<Skill[]>{
     return this.httpClient.get<Skill[]>(``)
   }
-
-
 
 }
