@@ -7,13 +7,19 @@
         <app-skill-category (skillCategoriesLoaded)="onSkillCategoriesLoaded($event)"></app-skill-category>
         <div class="category">
             <h3>Skills</h3>
-            <div *ngFor="let category of skillCategories" class="categoryList">
-                <ul>
-                    <li>
-                        <button>{{category.name}}</button>
-                    </li>
-                </ul>
+            <ul>
+              <li><button (click)="onCategorySelected('All')">All</button></li> <!-- Барлық skills -->
+              <li *ngFor="let category of skillCategories">
+                <button (click)="onCategorySelected(category.name)">{{ category.name }}</button>
+              </li>
+            </ul>
+          </div>
+      
+          <div class="Skills">
+            <div *ngFor="let skill of filteredSkills" class="Skills1">
+              <p [routerLink]="['/skill-detail',skill.id]">Name: {{ skill.name }}</p>
+              <p>Price:120$</p>
             </div>
-        </div>
+          </div>
     </div>
 </div>

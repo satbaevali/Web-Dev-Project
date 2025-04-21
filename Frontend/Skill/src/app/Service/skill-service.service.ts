@@ -27,11 +27,14 @@ export class SkillServiceService {
 
 
   getSkillCategories():Observable<SkillCategory[]>{
-    return this.httpClient.get<SkillCategory[]>('http://localhost:8000/api/api/skill-categories/')
+    return this.httpClient.get<SkillCategory[]>('http://localhost:8000/api/skill-categories/')
   }
 
-  getSkillDetail(): Observable<Skill[]>{
-    return this.httpClient.get<Skill[]>(``)
+  getALLSkill(): Observable<Skill[]>{
+    return this.httpClient.get<Skill[]>('http://localhost:8000/api/skills/')
+  }
+  getSkillDetail(id:number):Observable<Skill>{
+    return this.httpClient.get<Skill>(`http://localhost:8000/api/skills/${id}`)
   }
 
 }

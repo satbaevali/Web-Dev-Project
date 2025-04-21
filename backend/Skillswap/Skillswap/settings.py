@@ -43,10 +43,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'corsheaders',
-<<<<<<< HEAD
-=======
 
->>>>>>> 923b7e74aa52c6ad7c42b9ea8d038dfd98d71b79
 
 ]
 
