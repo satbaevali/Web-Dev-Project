@@ -6,7 +6,7 @@ from Application.models import Skill  # импортируем модель Skil
 class User(AbstractUser):
     bio = models.TextField(blank=True, null=True, verbose_name="Bio")
     profile_picture = models.URLField(blank=True, null=True, verbose_name="Profile picture URL")
-    Skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True, blank=True, related_name='users', verbose_name="Skill")
+    skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True, blank=True, related_name='users', verbose_name="Skill")
 
     class Meta:
         verbose_name = "User"

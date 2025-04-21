@@ -1,47 +1,45 @@
-from django.shortcuts import redirect, render
-from django.views import View
-from django.shortcuts import render
-from django.contrib.auth import authenticate,login
-from .forms import ProfileEditForm
-from django.contrib.auth.decorators import login_required
-from accounts.forms import CustomUserCreationForm
-class Register(View):
-    template_name = 'registration/register.html'
-    
-    def get(self,request):
-        context = {
-            'form':CustomUserCreationForm()
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from .serializers import RegisterSerializer, ProfileSerializer
+from rest_framework import status
 
-        }
-        return render(request,self.template_name,context)
-    
-    def post(self,request):
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
+class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
 
-            user = authenticate(username=username,password=password)
-            login(request,user) 
-            return redirect('home')
-        context = {
-        'form' : form
-        }
-        return render(request,self.template_name,context)
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Пользователь зарегистрирован'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@login_required
-def edit_profile(request):
-    if request.method == 'POST':
-        form = ProfileEditForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    else:
-        form = ProfileEditForm(instance=request.user)
 
-    return render(request, 'registration/edit_profile.html', {'form': form})
+class ProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
-@login_required
-def profile(request):
-    return render(request, 'registration/profile.html')
+    def get(self, request):
+        serializer = ProfileSerializer(request.user)
+        return Response(serializer.data)
+
+    def put(self, request):
+        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Профиль обновлен'})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class EditProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Получаем текущие данные пользователя
+        serializer = ProfileSerializer(request.user)
+        return Response(serializer.data)
+
+    def put(self, request):
+        # Редактируем профиль
+        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Профиль обновлен'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
