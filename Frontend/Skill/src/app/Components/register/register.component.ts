@@ -19,7 +19,8 @@ export class RegisterComponent {
     this.skillService.getRegister(this.username,this.password).subscribe({
       next: response =>{
         console.log("Registration success",response)
-        this.route.navigate(['/'])
+        alert("Cәтті кірді");
+        this.route.navigate(['/home'])
       },
       error: error =>{
         console.log("Error",error)

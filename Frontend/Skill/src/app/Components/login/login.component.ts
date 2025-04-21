@@ -20,7 +20,7 @@ export class LoginComponent {
       next:(response)=>{
         localStorage.setItem('access_token',response.access),
         localStorage.setItem('refresh_token',response.refresh)
-        this.route.navigate(['/'])
+        this.route.navigate(['/home'])
         alert("PassedLogin")
       },
       error: (error)=>{

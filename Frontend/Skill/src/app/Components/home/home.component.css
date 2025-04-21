@@ -1,8 +1,22 @@
-
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 .home-page{
     height: 100vh;
-    background-image: url("https://sun9-71.userapi.com/impf/b4AlZDsV7AK93uSvPu4iaVTKbrpeKjbE0i3Mlg/5Jznzjk2OPw.jpg?size=604x340&quality=96&sign=cecf2d835b97d6313d44b8819808c9ff&type=album");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+
+}
+.home-form{
+    margin: 0 auto;
+    width:1350px;
+    margin-top: 10px;
+    height: 100vh;
+}
+.home-top{
+    display: flex;
+    justify-content: space-between;
+}
+.home-top img{
+    width:45px;
 }

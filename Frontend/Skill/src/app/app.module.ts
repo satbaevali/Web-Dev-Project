@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app.routes'; // Роутинг модулі
     AppComponent,
     SkillCategoryComponent,
     SkillDetailComponent, // Компоненттерді тіркеу
+    SkillCategoryComponent
   ],
   imports: [
     BrowserModule,
