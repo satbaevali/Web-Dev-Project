@@ -15,10 +15,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', ''),
-            password=validated_data['password'],
-            skill=validated_data.get('skill')
+            password=validated_data['password']
         )
         return user
 
@@ -27,3 +24,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'bio', 'skill', 'profile_picture']
+    def update(self, instance, validated_data):
+        # Здесь можно добавить логику для обновления только изображения
+        instance.profile_picture = validated_data.get('profile_picture', instance.profile_picture)
+        instance.save()
+        return instance

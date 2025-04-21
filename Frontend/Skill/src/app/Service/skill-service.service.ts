@@ -13,25 +13,36 @@ export class SkillServiceService {
   constructor(private httpClient:HttpClient) { }
 
   getLogin(username:string,password:string):Observable<{ access: string; refresh: string }>{
-    return this.httpClient.post<{ access: string; refresh: string }>('http://localhost:8000/',{
+    return this.httpClient.post<{ access: string; refresh: string }>('http://localhost:8000/accounts/login/',{
       username:username,
       password:password
+
     })
   }
-  getRegister(username:string,password:string):Observable<any>{
-    return this.httpClient.post<any>('http://localhost:8000/',{
-      username:username,
+  getRegister(name:string,password:string,email:string):Observable<any>{
+    return this.httpClient.post<any>('http://localhost:8000/register/',{
+      username:name,
       password:password,
+      email:email
     })
+  }
+  getUserProfile(): Observable<any> {
+    return this.httpClient.get<any>('http://localhost:8000/accounts/profile/');
+  }
+  updateUserProfile(userData: any): Observable<any> {
+    return this.httpClient.put<any>('http://localhost:8000/accounts/profile/', userData);
   }
 
-  getCategory():Observable<SkillCategory[]>{
-    return this.httpClient.get<SkillCategory[]>('')
+
+  getSkillCategories():Observable<SkillCategory[]>{
+    return this.httpClient.get<SkillCategory[]>('http://localhost:8000/api/skill-categories/')
   }
 
   getSkillDetail(): Observable<Skill[]>{
     return this.httpClient.get<Skill[]>(``)
   }
+  
+
 
 
 }
