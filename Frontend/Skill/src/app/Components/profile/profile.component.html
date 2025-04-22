@@ -1,7 +1,8 @@
+<div class="main">
 <div class="profile-container">
   <ng-container *ngIf="!editMode; else editForm">
-    <h2>Профиль пользователя</h2>
-    <hr>
+    <h2>SkillWay</h2>
+
     <p><strong>Имя:</strong> {{ user.first_name }} {{ user.last_name }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
 
@@ -19,7 +20,7 @@
     <img *ngIf="user.profile_picture; else noPhoto" [src]="user.profile_picture" alt="Profile Picture" width="100">
     <ng-template #noPhoto><p>Фото не загружено.</p></ng-template>
 
-    <button (click)="editMode = true">Редактировать профиль</button>
+    <button class="redact-profile" (click)="editMode = true">Редактировать профиль</button>
   </ng-container>
 
   <ng-template #editForm>
@@ -59,4 +60,5 @@
       <button type="button" (click)="editMode = false">Отмена</button>
     </form>
   </ng-template>
+</div>
 </div>

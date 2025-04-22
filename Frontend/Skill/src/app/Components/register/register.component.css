@@ -1,15 +1,15 @@
 
 .sign-page {
     height: 100vh;
-    background: linear-gradient(135deg, #4A90E2, #2357C7);
+    background: #EFECEC;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .sign-form {
   background: white;
-  width: 900px;
-  height: 500px;
+  width: 550px;
+  height: 470px;
   border-radius: 20px;
   display: flex;
   overflow: hidden;
@@ -25,6 +25,7 @@
     font-size: 1.399rem;
     letter-spacing:1px;
     font-weight: 700;
+  color: #0866FF;
 }
 .sign-L p{
     margin-bottom: 10px;
@@ -60,21 +61,4 @@
 .sign-btn:hover{
     background-color: #2357C7;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-.sign-R {
-    flex: 1;
-    display: flex;
-    background: #83b3e2;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.sign-R img{
-    width:80%;
-    border-radius:20px;
-}
-.sign-R h3{
-  text-align: center;
-  padding: 0 20px;
-  color: #333;
 }

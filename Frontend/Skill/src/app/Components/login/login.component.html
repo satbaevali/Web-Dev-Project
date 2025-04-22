@@ -1,21 +1,28 @@
 <div class="login-page">
-    <div class="login-form">
-        <div class="login-L">
-            <h2>Welcome to SkillWay</h2>
-            <p>Welcome back, Please Login to your Account.</p>
-            <input type="text" placeholder="Login">
-            <input type="password" placeholder="Password">
-            <div class="links">
-                <a href="#">Forgot Password?</a>
-            </div>
-            <div class="submit1">
-                <button type="submit" [routerLink]="['/home']" class="login-btn">Login</button>
-                <button href="#" [routerLink]="['/register']" class="sign-btn">Sign Up</button>
-            </div>
-        </div>
-        <div class="login-R">
-            <img src="https://play-lh.googleusercontent.com/XVqxd1OZKteinp10rtl34GmN0jMeTpirQjFq33fmEuBevSfc4EkMIoXqS_QL3PCH4dE=w600-h300-pc0xffffff-pd" alt="login">
-            <h3>Discover Amazing Microchip with great build tools</h3>
-        </div>
+  <div class="login-form">
+    <div class="login-L">
+      <h2>SkillSwap</h2>
+      <h1>Learn from the best.</h1>
+      <p>Take your skills to the next level with our expert-led online courses. <br>
+        Access interactive lessons, practical assignments, and real-world knowledge. Start learning today!</p>
+
+
+      <div class="links">
+        <a href="#">about us</a>
+        <a href="#">contacts</a>
+        <a href="#">help</a>
+        <a href="#">privacy policy</a>
+      </div>
     </div>
+    <div class="login-R">
+      <div class="card">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <label><input type="checkbox"> Remember me</label>
+        <button type="submit" [routerLink]="['/home']" class="login-btn">Login</button>
+        <div class="divider">OR</div>
+        <button href="#" [routerLink]="['/register']" class="sign-btn">Sign Up</button>
+      </div>
+    </div>
+  </div>
 </div>

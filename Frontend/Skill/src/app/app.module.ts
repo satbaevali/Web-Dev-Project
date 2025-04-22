@@ -6,13 +6,13 @@ import { SkillDetailComponent } from './components/skill-detail/skill-detail.com
 import { HttpClientModule } from '@angular/common/http'; // HTTP сұраныстарын жасау үшін
 import { CommonModule } from '@angular/common'; // Жалпы Angular функциялар
 import { AppRoutingModule } from './app.routes'; // Роутинг модулі
-import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
     SkillCategoryComponent,
     SkillDetailComponent, // Компоненттерді тіркеу
-    SkillCategoryComponent,
+    SkillCategoryComponent
   ],
   imports: [
     BrowserModule,

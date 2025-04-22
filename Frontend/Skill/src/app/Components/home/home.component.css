@@ -4,18 +4,23 @@
     box-sizing: border-box;
 }
 .home-page{
-    height: 100vh;
-
+  padding-top: 10px;
+  background-color: #f0f2f5;
 }
 .home-form{
+  background-color: white;
+  padding: 20px;
     margin: 0 auto;
     width:1350px;
-    margin-top: 10px;
     height: 100vh;
+  border-radius: 10px;
 }
 .home-top{
     display: flex;
     justify-content: space-between;
+}
+.home-top h2{
+  color: #0866FF;
 }
 .home-top img{
     width:45px;
