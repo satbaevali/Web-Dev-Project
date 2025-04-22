@@ -13,7 +13,7 @@ from .models import (
 class SkillCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SkillCategory
-        fields = ['id', 'name', 'description','price']
+        fields = ['id', 'name', 'description']
 
 class SkillSerializer(serializers.ModelSerializer):
     category = SkillCategorySerializer(read_only=True)
@@ -27,7 +27,7 @@ class SkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Skill
-        fields = ['id', 'name', 'description', 'category', 'category_id']
+        fields = ['id', 'name', 'description', 'category', 'category_id','price','image']
 
 class TeachingOfferSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)

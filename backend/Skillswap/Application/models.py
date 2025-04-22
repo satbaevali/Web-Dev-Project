@@ -20,6 +20,7 @@ class Skill(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name="Skill Name")
     description = models.TextField(blank=True, null=True, verbose_name="Description")
     price =  models.FloatField(default=0, verbose_name="Price")
+    image =  models.URLField(max_length=200, blank=True, null=True, verbose_name="Image URL")
     category = models.ForeignKey(
         SkillCategory,
         on_delete=models.SET_NULL,

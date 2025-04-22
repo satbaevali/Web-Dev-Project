@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny,IsAuthenticated
 from .serializers import RegisterSerializer, ProfileSerializer
 from rest_framework import status
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -17,20 +19,16 @@ class RegisterAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class ProfileAPIView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get(self, request):
-        serializer = ProfileSerializer(request.user)
-        return Response(serializer.data)
-
-    def put(self, request):
-        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Профиль обновлен'})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, username=None):  # <--- Добавили username
+        try:
+            user = User.objects.get(username=username) if username else request.user
+            serializer = ProfileSerializer(user)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response({'error': 'Пользователь не найден'}, status=status.HTTP_404_NOT_FOUND)
 class EditProfileAPIView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 

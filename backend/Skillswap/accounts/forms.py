@@ -15,7 +15,7 @@ class CustomUserCreationForm(BaseUserCreationForm):
     last_name = forms.CharField(max_length=150, required=False, label='Фамилия')
     email = forms.EmailField(required=True, label='Email')
 
-    # ИЗМЕНЕНО: Используйте ModelChoiceField для ForeignKey
+    
     skill = forms.ModelChoiceField(
         queryset=Skill.objects.all(),
         required=False, # Соответствует null=True в модели
