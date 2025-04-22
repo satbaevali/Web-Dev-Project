@@ -15,11 +15,11 @@ class SkillCategory(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name
-
+        return self.name 
 class Skill(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name="Skill Name")
     description = models.TextField(blank=True, null=True, verbose_name="Description")
+    price =  models.FloatField(default=0, verbose_name="Price")
     category = models.ForeignKey(
         SkillCategory,
         on_delete=models.SET_NULL,

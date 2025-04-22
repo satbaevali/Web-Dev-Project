@@ -8,12 +8,12 @@ class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        print("DATA RECEIVED:", request.data)
+        print("DATA RECEIVED:", request.data) # Эта строка покажет, какие данные были получены
         serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(): # Здесь происходит проверка данных
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("ERRORS:", serializer.errors)
+        print("ERRORS:", serializer.errors) # Если данные невалидны, сюда попадает сообщение об ошибке
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -35,12 +35,12 @@ class EditProfileAPIView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        profile = request.user.userprofile
+        profile = request.user
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
 
     def put(self, request):
-        profile = request.user.userprofile
+        profile = request.user
         serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

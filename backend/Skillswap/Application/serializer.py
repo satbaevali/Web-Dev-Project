@@ -13,7 +13,7 @@ from .models import (
 class SkillCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SkillCategory
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description','price']
 
 class SkillSerializer(serializers.ModelSerializer):
     category = SkillCategorySerializer(read_only=True)

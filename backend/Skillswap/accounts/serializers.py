@@ -17,6 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password']
         )
+        # Заметьте: first_name, last_name и skill из validated_data сейчас игнорируются при создании пользователя
         return user
 
 
