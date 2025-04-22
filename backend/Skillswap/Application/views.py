@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from django.http import Http404
 from Application import models
-
+from .filters import Skill, SkillFilter
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -19,7 +19,8 @@ from .serializer import (
     SwapRequestSerializer
 )
 
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class SkillCategoryViewSet(viewsets.ModelViewSet):
@@ -30,8 +31,10 @@ class SkillCategoryViewSet(viewsets.ModelViewSet):
 class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all().select_related('category')
     serializer_class = SkillSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = SkillFilter
 class TeachingOfferViewSet(viewsets.ModelViewSet):
     queryset = TeachingOffer.objects.all().select_related('user', 'skill')
     serializer_class = TeachingOfferSerializer
