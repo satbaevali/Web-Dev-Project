@@ -31,7 +31,7 @@ export class LoginComponent {
         }
       },
       error: () => {
-        this.errorMessage = 'Неверное имя пользователя или пароль';
+        this.errorMessage = 'Wrong password or login';
       }
     });
   }

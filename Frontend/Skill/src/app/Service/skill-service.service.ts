@@ -9,28 +9,31 @@ import { SkillCategory } from '../modules/SkillCategory';
 })
 export class SkillServiceService {
   snapshot: any;
+  private API = 'http://localhost:8000';
 
   constructor(private httpClient:HttpClient) { }
 
-  getLogin(username:string,password:string):Observable<{ access: string; refresh: string }>{
-    return this.httpClient.post<{ access: string; refresh: string }>('http://localhost:8000/accounts/login/',{
-      username:username,
-      password:password
+  getLogin(username: string, password: string): Observable<{ access: string; refresh: string }> {
+    return this.httpClient.post<{ access: string; refresh: string }>(
+      'http://localhost:8000/api/api/login/',
+      { username, password }
+    );
+  }
 
-    })
+  getRegister(name: string, password: string, email: string): Observable<any> {
+    return this.httpClient.post<any>('http://localhost:8000/register/', {
+      username: name,
+      password,
+      email
+    });
   }
-  getRegister(name:string,password:string,email:string):Observable<any>{
-    return this.httpClient.post<any>('http://localhost:8000/register/',{
-      username:name,
-      password:password,
-      email:email
-    })
+  getUserProfile(username: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.API}/accounts/profile/${username}/`);
   }
-  getUserProfile(): Observable<any> {
-    return this.httpClient.get<any>('http://localhost:8000/accounts/profile/');
-  }
-  updateUserProfile(userData: any): Observable<any> {
-    return this.httpClient.put<any>('http://localhost:8000/accounts/profile/', userData);
+
+  // Обновление профиля конкретного пользователя
+  updateUserProfile(username: string, formData: FormData): Observable<any> {
+    return this.httpClient.put<any>(`${this.API}/accounts/edit_profile/${username}/`, formData);
   }
 
 
@@ -41,8 +44,10 @@ export class SkillServiceService {
   getSkillDetail(): Observable<Skill[]>{
     return this.httpClient.get<Skill[]>(``)
   }
-  
 
+  getALLSkill(): Observable<Skill[]>{
+    return this.httpClient.get<Skill[]>('http://localhost:8000/api/skills/')
+  }
 
 
 }

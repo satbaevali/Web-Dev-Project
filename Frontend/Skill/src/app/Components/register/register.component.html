@@ -1,18 +1,18 @@
 <div class="sign-page">
-    <div class="sign-form">
-        <div class="sign-L">
-            <h2>SkillSwap</h2>
-            <p>Please fill in the details to create your account.</p>
+  <div class="sign-form">
+    <div class="sign-L">
+      <h2>SkillSwap</h2>
+      <p>Please fill in the details to create your account.</p>
 
-            <input type="text" placeholder="Username" [(ngModel)]="username">
-            <input type="email" placeholder="Email" [(ngModel)]="email">
-            <input type="password" placeholder="Password" [(ngModel)]="password">
+      <input type="text" placeholder="Username" [(ngModel)]="username">
+      <input type="email" placeholder="Email" [(ngModel)]="email">
+      <input type="password" placeholder="Password" [(ngModel)]="password">
 
-            <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+      <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
 
-            <div class="submit">
-                <button (click)="Register()" class="sign-btn">Create Account</button>
-            </div>
-        </div>
+      <div class="submit">
+        <button (click)="Register()" class="sign-btn">Create Account</button>
+      </div>
     </div>
+  </div>
 </div>

@@ -1,27 +1,100 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-.home-page{
-  padding-top: 10px;
-  background-color: #f0f2f5;
-}
-.home-form{
-  background-color: white;
+.home-page {
   padding: 20px;
-    margin: 0 auto;
-    width:1350px;
-    height: 100vh;
-  border-radius: 10px;
+  background: #f0f2f5;
+  min-height: 100vh;
 }
-.home-top{
-    display: flex;
-    justify-content: space-between;
+.home-form {
+  max-width: 1200px;
+  margin: 0 auto;
 }
-.home-top h2{
+.home-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
   color: #0866FF;
+  cursor: pointer;
 }
-.home-top img{
-    width:45px;
+.profile-icon {
+  width: 45px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.controls {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.category-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+.skill-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.skill-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.skill-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+.skill-info {
+  padding: 12px;
+  flex: 1;
+}
+.skill-info h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.desc {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+  height: 40px;
+  overflow: hidden;
+}
+.price {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.btn-detail {
+  background: #0866FF;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 0 0 8px 8px;
+  width: 100%;
+  cursor: pointer;
+}
+.btn-detail:hover {
+  background: #0053cc;
+}
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #999;
+  margin-top: 40px;
 }

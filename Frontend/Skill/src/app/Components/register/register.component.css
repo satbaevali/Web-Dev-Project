@@ -1,10 +1,10 @@
 
 .sign-page {
-    height: 100vh;
-    background: #EFECEC;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  background: #EFECEC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .sign-form {
   background: white;
@@ -21,44 +21,44 @@
   padding: 80px;
 }
 .sign-L h2{
-    margin-bottom: 10px;
-    font-size: 1.399rem;
-    letter-spacing:1px;
-    font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 1.399rem;
+  letter-spacing:1px;
+  font-weight: 700;
   color: #0866FF;
 }
 .sign-L p{
-    margin-bottom: 10px;
-    color: #777;
+  margin-bottom: 10px;
+  color: #777;
 }
 .sign-L input{
-    display: flex;
-    margin-bottom: 20px;
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 .sign-L input:hover{
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 .submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .sign-btn {
-    flex:0.4;
-    padding: 12px;
-    border:none;
-    border-radius: 8px;
-    background-color: #4d7ee9;
-    color: white;
-    font-size: 15px;
-    letter-spacing:0.5px;
+  flex:0.4;
+  padding: 12px;
+  border:none;
+  border-radius: 8px;
+  background-color: #4d7ee9;
+  color: white;
+  font-size: 15px;
+  letter-spacing:0.5px;
 }
 .sign-btn:hover{
-    background-color: #2357C7;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  background-color: #2357C7;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }

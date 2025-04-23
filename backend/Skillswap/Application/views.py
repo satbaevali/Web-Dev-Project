@@ -35,6 +35,17 @@ class SkillViewSet(viewsets.ModelViewSet):
     
     filter_backends = (DjangoFilterBackend,)
     filterset_class = SkillFilter
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def search_view(request):
+    query = request.GET.get('name', '')
+
+    skills = Skill.objects.filter(name__icontains=query)
+    serializer = SkillSerializer(skills, many=True)
+
+    return Response(serializer.data)
+
 class TeachingOfferViewSet(viewsets.ModelViewSet):
     queryset = TeachingOffer.objects.all().select_related('user', 'skill')
     serializer_class = TeachingOfferSerializer

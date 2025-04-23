@@ -1,94 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import { SkillServiceService } from '../../Service/skill-service.service';
+import {SkillCategory} from '../../modules/SkillCategory';
+import {FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
-  standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    FormsModule, CommonModule, RouterLink
+  ],
+  styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  user: any = {
-    username: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    bio: '',
-    profile_picture: null,
-    skill: []
-  };
+  user: any = {};
   editMode = false;
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   errorMessage: string | null = null;
+  allCategories: SkillCategory[] = [];// для выпадающего списка навыков
+  selectedSkillId: number | null = null; // выбранный навык
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private skillService: SkillServiceService, private router: Router) {}
 
   ngOnInit(): void {
     const username = localStorage.getItem('username');
-    if (username) {
-      this.loadUserProfile(username);
-    } else {
-      this.router.navigate(['/login']);
-    }
+    if (!username) { this.router.navigate(['/login']); return; }
+    this.loadUserProfile(username);
+    // подгружаем категории как список для выбора skill
+    this.skillService.getSkillCategories().subscribe(c=> this.allCategories=c);
   }
 
-  // Load user profile data from the server
-  loadUserProfile(username: string): void {
-    this.http.get(`http://localhost:8000/accounts/profile/${username}/`).subscribe({
-      next: (data: any) => {
-        this.user = data;
-      },
-      error: (error) => {
-        console.error('Ошибка при загрузке профиля', error);
-        this.errorMessage = 'Не удалось загрузить профиль. Попробуйте снова позже.';
-      }
+  loadUserProfile(username: string) {
+    this.skillService.getUserProfile(username).subscribe({
+      next: data => this.user = data,
+      error: () => this.errorMessage = 'Не удалось загрузить профиль.'
     });
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
+  onFileSelected(e: Event) {
+    const input = e.target as HTMLInputElement;
+    if (input.files?.[0]) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewUrl = e.target.result;
-      };
+      reader.onload = ev => this.previewUrl = (ev.target as any).result;
       reader.readAsDataURL(this.selectedFile);
     }
   }
 
-  updateProfile(): void {
-    if (!this.user.username || !this.user.first_name || !this.user.last_name) {
-      this.errorMessage = 'Пожалуйста, заполните все обязательные поля.';
+  updateProfile() {
+    if (!this.user.first_name || !this.user.last_name) {
+      this.errorMessage = 'Заполните имя и фамилию.';
       return;
     }
+    const fd = new FormData();
+    ['username','first_name','last_name','email','bio'].forEach(f => {
+      if (this.user[f] != null) fd.append(f, this.user[f]);
+    });
+    if (this.selectedFile) fd.append('profile_picture', this.selectedFile, this.selectedFile.name);
+    if (this.selectedSkillId) fd.append('skill', this.selectedSkillId.toString());
 
-    const formData = new FormData();
-    formData.append('username', this.user.username);
-    formData.append('first_name', this.user.first_name);
-    formData.append('last_name', this.user.last_name);
-    formData.append('bio', this.user.bio);
-
-    if (this.selectedFile) {
-      formData.append('profile_picture', this.selectedFile, this.selectedFile.name);
-    }
-
-    this.http.put(`http://localhost:8000/accounts/profile/${this.user.username}/`, formData).subscribe({
-      next: (response) => {
-        alert('Профиль успешно обновлен');
+    const username = this.user.username;
+    this.skillService.updateUserProfile(username, fd).subscribe({
+      next: () => {
+        alert('Профиль сохранён');
         this.editMode = false;
         this.previewUrl = null;
-        this.loadUserProfile(this.user.username); // Перезагрузка данных с обновленным профилем
+        this.loadUserProfile(username);
       },
-      error: (error) => {
-        console.error('Ошибка при обновлении профиля:', error);
-        this.errorMessage = 'Не удалось обновить профиль. Попробуйте снова.';
-      }
+      error: () => this.errorMessage = 'Ошибка при сохранении.'
     });
   }
+
+  logout(): void {
+    // Удаляем всё, что связано с пользователем
+    // Можно очистить весь localStorage, если больше нечего хранить:
+    // localStorage.clear();
+
+    // Редирект на страницу логина
+    this.router.navigate(['/login']);
+  }
+
+  // устанавливаем навык из select
+  onSkillChange(id: string) {
+    this.selectedSkillId = +id;
+  }
+
+  protected readonly HTMLSelectElement = HTMLSelectElement;
 }

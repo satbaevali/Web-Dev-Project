@@ -16,10 +16,14 @@
     </div>
     <div class="login-R">
       <div class="card">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <label><input type="checkbox"> Remember me</label>
-        <button type="submit" [routerLink]="['/home']" class="login-btn">Login</button>
+        <input type="email" [(ngModel)]="username" placeholder="Email">
+        <input type="password" [(ngModel)]="password" placeholder="Password">
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" (click)="login()" class="login-btn">Login</button>
         <div class="divider">OR</div>
         <button href="#" [routerLink]="['/register']" class="sign-btn">Sign Up</button>
       </div>

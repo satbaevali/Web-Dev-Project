@@ -22,10 +22,10 @@ export class RegisterComponent {
       next: response => {
         console.log("Registration success", response);
         alert("Сәтті тіркелді");
-
+  
         // Сохраняем email, username в localStorage (или другой способ, если используешь токены)
         localStorage.setItem('username', this.username);
-
+  
         // Переход на страницу профиля
         this.route.navigate(['/profile']);
       },
@@ -35,5 +35,5 @@ export class RegisterComponent {
       }
     });
   }
-
+  
 }
