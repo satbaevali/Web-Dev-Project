@@ -1,0 +1,19 @@
+.hero-section {
+    background-image: url('https://media.istockphoto.com/id/2173915109/photo/skill-competency-development-concept-up-new-ability-skill-training-for-technology-evolution.jpg?s=2048x2048&w=is&k=20&c=EntBZe7FHA2R7aGAA8OlfMgN7aoLf95MwU3ZOTk0iIU=');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* қара жартылай фон */
+    color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  

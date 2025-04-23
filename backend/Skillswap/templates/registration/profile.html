@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Профиль</h1>
+        <hr>
+        <p><strong>Имя:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Биография:</strong> {{ user.bio }}</p>
+        <p><strong>Скиллы:</strong></p>
+        {% if user.skills.all %}
+            <ul>
+                {% for skill in user.skills.all %}
+                    <li>{{ skill.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Скиллы не добавлены.</p>
+        {% endif %}
+        <p><strong>Фото профиля:</strong></p>
+        {% if user.profile_picture %}
+            <img src="{{ user.profile_picture }}" alt="Profile Picture" width="100">
+        {% else %}
+            <p>Фото не загружено.</p>
+        {% endif %}
+        <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
+    </div>
+{% endblock %}

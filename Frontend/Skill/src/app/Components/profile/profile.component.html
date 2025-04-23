@@ -1,0 +1,62 @@
+<div class="profile-container">
+  <ng-container *ngIf="!editMode; else editForm">
+    <h2>Профиль пользователя</h2>
+    <hr>
+    <p><strong>Имя:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <p><strong>Биография:</strong></p>
+    <p *ngIf="user.bio; else noBio">{{ user.bio }}</p>
+    <ng-template #noBio><p>Биография не указана.</p></ng-template>
+
+    <p><strong>Скиллы:</strong></p>
+    <ul *ngIf="user.skill && user.skill.length > 0; else noSkills">
+      <li *ngFor="let skill of user.skill">{{ skill }}</li>
+    </ul>
+    <ng-template #noSkills><p>Скиллы не добавлены.</p></ng-template>
+
+    <p><strong>Фото профиля:</strong></p>
+    <img *ngIf="user.profile_picture; else noPhoto" [src]="user.profile_picture" alt="Profile Picture" width="100">
+    <ng-template #noPhoto><p>Фото не загружено.</p></ng-template>
+
+    <button (click)="editMode = true">Редактировать профиль</button>
+  </ng-container>
+
+  <ng-template #editForm>
+    <h2>Редактировать профиль</h2>
+    <form (ngSubmit)="updateProfile()">
+      <div>
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" [(ngModel)]="user.username" name="username" required />
+      </div>
+      <div>
+        <label for="first_name">Имя:</label>
+        <input type="text" id="first_name" [(ngModel)]="user.first_name" name="first_name" required />
+      </div>
+      <div>
+        <label for="last_name">Фамилия:</label>
+        <input type="text" id="last_name" [(ngModel)]="user.last_name" name="last_name" required />
+      </div>
+      <div>
+        <label for="bio">О себе:</label>
+        <textarea id="bio" [(ngModel)]="user.bio" name="bio"></textarea>
+      </div>
+      <div>
+        <label for="profile_picture">Фото профиля:</label>
+        <input type="file" (change)="onFileSelected($event)" />
+      </div>
+
+      <div *ngIf="previewUrl">
+        <p>Новое фото:</p>
+        <img [src]="previewUrl" width="100" />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit">Сохранить изменения</button>
+      <button type="button" (click)="editMode = false">Отмена</button>
+    </form>
+  </ng-template>
+</div>
