@@ -17,17 +17,23 @@ export class RegisterComponent {
   errorMessage:string=''
 
   constructor(private skillService:SkillServiceService,private route:Router){}
-  Register(){
-    this.skillService.getRegister(this.username,this.password,this.email).subscribe({
-      next: response =>{
-        console.log("Registration success",response)
-        alert("Cәтті кірді");
-        this.route.navigate(['/home'])
+  Register() {
+    this.skillService.getRegister(this.username, this.password, this.email).subscribe({
+      next: response => {
+        console.log("Registration success", response);
+        alert("Сәтті тіркелді");
+
+        // Сохраняем email, username в localStorage (или другой способ, если используешь токены)
+        localStorage.setItem('username', this.username);
+
+        // Переход на страницу профиля
+        this.route.navigate(['/profile']);
       },
-      error: error =>{
-        console.log("Error",error)
-        this.errorMessage="Тіркелу сәтсіз болды "
+      error: error => {
+        console.log("Error", error);
+        this.errorMessage = "Тіркелу сәтсіз болды";
       }
-    })
+    });
   }
+
 }
