@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.home-page{
+    height: 100vh;
+
+}
+.home-form{
+    margin: 0 auto;
+    width:1350px;
+    margin-top: 10px;
+    height: 100vh;
+}
+.home-top{
+    display: flex;
+    justify-content: space-between;
+}
+.home-top img{
+    width:45px;
+}

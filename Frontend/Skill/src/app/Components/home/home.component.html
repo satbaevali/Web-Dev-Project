@@ -1,0 +1,19 @@
+<div class="home-page">
+    <div class="home-form">
+        <div class="home-top">
+            <h2>SkillWay</h2>
+            <img src="https://avatars.mds.yandex.net/i?id=1a76dc8ec88a2c91012d4518146c9b988f66bcac-5865527-images-thumbs&n=13" alt="login"(click)="goToProfile()"style="cursor: pointer;"/>
+        </div>
+        <app-skill-category (skillCategoriesLoaded)="onSkillCategoriesLoaded($event)"></app-skill-category>
+        <div class="category">
+            <h3>Skills</h3>
+            <div *ngFor="let category of skillCategories" class="categoryList">
+                <ul>
+                    <li>
+                        <button>{{category.name}}</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
