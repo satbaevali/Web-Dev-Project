@@ -1,11 +1,19 @@
-import { SkillCategory } from "./SkillCategory"
+import { SkillCategory } from "./SkillCategory";
 
-export interface Skill{
+export interface Review {
+  user: string;
+  comment: string;
+}
 
-    id:number,
-    name:string,
-    description:string,
-    category:SkillCategory,
-  price: number,
-  image?: string,
+export interface Skill {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image?: string;
+  category: SkillCategory;
+
+
+  rating: number;
+  reviews: Review[];
 }

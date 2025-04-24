@@ -1,139 +1,19 @@
-.main {
-  min-height: 740.3px;
-  background-color: #f0f2f5;
-  padding-top: 30px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.profile-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 40px;
-  border-radius: 16px;
-  background-color: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-}
-
-.profile-container h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #0866FF;
-}
-
-.profile-container p,
-.profile-container li {
-  font-size: 16px;
-  color: #444;
-  line-height: 1.6;
-}
-
-.profile-actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
-.btn-logout {
-  padding: 10px 16px;
-  background-color: #d9534f;
-  color: white;
-  border: none;
-  font-weight: 500;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.btn-logout:hover {
-  background-color: #c9302c;
-}
-
-.redact-profile{
-  padding: 10px 16px;
-  margin-right: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  font-weight: 500;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: fit-content;
-}
-
-.profile-container strong {
-  color: #222;
-}
-
-.profile-container ul {
-  padding-left: 20px;
-}
-
-.profile-container img {
-  border-radius: 8px;
-  margin-top: 10px;
-}
-
-.profile-container form {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-container form div {
-  margin-bottom: 16px;
-}
-
-.profile-container form label {
-  margin-bottom: 6px;
-  font-weight: 500;
-  display: block;
-  color: #333;
-}
-
-.profile-container form input,
-.profile-container form textarea {
-  padding: 10px 12px;
-  font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  transition: border-color 0.2s ease-in-out;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.profile-container form input:focus,
-.profile-container form textarea:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.profile-container form button {
-  padding: 10px 16px;
-  margin-right: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  font-weight: 500;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: fit-content;
-}
-
-.profile-container form button:hover {
-  background-color: #0056b3;
-}
-
-.logo {
-  color: #0866FF;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.profile-container button {
-  margin-top: 20px;
-}
-
-.error-message {
-  color: #d9534f;
-  font-size: 14px;
-  margin-top: -8px;
-}
+.profile-header { display: flex; align-items: center; padding: 10px; }
+.back-home { display: flex; align-items: center; text-decoration: none; }
+.logo-img { width: 32px; margin-right: 8px; }
+.logo-text { font-size: 1.2rem; color: #0866FF; }
+.profile-container { background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 700px; margin: 20px auto; }
+.tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+.tabs button { flex: 1; padding: 8px; border: none; background: #edf2f7; cursor: pointer; }
+.tabs button.active { background: #0866FF; color: #fff; }
+.rating-block { display: flex; align-items: center; gap: 4px; margin: 10px 0; }
+.star { color: #e2e8f0; }
+.star.filled { color: #f6ad55; }
+.offers, .reviews { margin-top: 20px; }
+.review { background: #f9faf9; padding: 8px; border-radius: 6px; margin-bottom: 6px; }
+.edit-form { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.edit-form label { display: flex; flex-direction: column; font-weight: 500; }
+.preview { width: 100px; border-radius: 8px; margin-top: 8px; }
+.error-message { color: #d9534f; }
+.btn-logout { background: #d9534f; color: #fff; border: none; padding: 8px; border-radius: 6px; cursor: pointer; }
+.btn-logout:hover { background: #c9302c; }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 import { Skill } from '../modules/Skill';
 import { SkillCategory } from '../modules/SkillCategory';
 
@@ -49,5 +49,18 @@ export class SkillServiceService {
     return this.httpClient.get<Skill[]>('http://localhost:8000/api/skills/')
   }
 
+  getSkillById(id: number): Observable<Skill> {
+    return this.httpClient.get<Skill>(`http://localhost:8000/api/skills/${id}/`);
+  }
 
-}
+  getUserOffers(username: string): Observable<any[]> {
+    return this.getUserProfile(username).pipe(
+      map((profile: any) => profile.teaching_offers || [])
+    );
+  }
+
+  getUserReviews(username: string): Observable<any[]> {
+    return this.getUserProfile(username).pipe(
+      map((profile: any) => profile.reviews || [])
+    );
+}}

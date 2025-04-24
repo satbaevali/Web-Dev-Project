@@ -1,0 +1,33 @@
+<div class="skill-detail-container">
+  <div class="card">
+    <img class="skill-image" [src]="skill.image" alt="Skill Image" />
+    <div class="info">
+      <h1>{{ skill.name }}</h1>
+      <span class="category">{{ skill.category.name }}</span>
+
+      <div class="rating">
+        <span *ngFor="let star of [1,2,3,4,5]">
+          <i class="star" [class.filled]="star <= skill.rating">★</i>
+        </span>
+        <span class="rating-value">{{ skill.rating.toFixed(1) }}/5</span>
+      </div>
+
+      <p class="description">{{ skill.description }}</p>
+
+      <div class="price-block">
+        <span class="price">{{ skill.price }} ₽</span>
+        <button class="contact-btn">Записаться на урок</button>
+      </div>
+
+      <div class="reviews">
+        <h3>Отзывы учеников</h3>
+        <div class="review" *ngFor="let review of skill.reviews">
+          <strong>{{ review.user }}</strong>
+          <p>{{ review.comment }}</p>
+        </div>
+      </div>
+
+      <a routerLink="/home" class="back-link">← Вернуться на главную</a>
+    </div>
+  </div>
+</div>

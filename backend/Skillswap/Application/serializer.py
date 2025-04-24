@@ -29,6 +29,8 @@ class SkillSerializer(serializers.ModelSerializer):
         model = Skill
         fields = ['id', 'name', 'description', 'category', 'category_id','price','image']
 
+
+
 class TeachingOfferSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
     skill = SkillSerializer(read_only=True)
@@ -47,16 +49,9 @@ class TeachingOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeachingOffer
         fields = [
-            'id',
-            'user',
-            'skill',
-            'description',
-            'experience_level',
-            'status',
-            'created_at',
-            'updated_at',
-            'user_id',
-            'skill_id',
+            'id', 'user', 'skill', 'description',
+            'experience_level', 'status', 'created_at', 'updated_at',
+            'user_id', 'skill_id'
         ]
         read_only_fields = ('created_at', 'updated_at')
 
@@ -77,16 +72,7 @@ class LearningRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LearningRequest
-        fields = [
-            'id',
-            'user',
-            'skill',
-            'desired_level',
-            'status',
-            'created_at',
-            'user_id',
-            'skill_id',
-        ]
+        fields = ['id', 'user', 'skill', 'desired_level', 'status', 'created_at', 'user_id', 'skill_id']
         read_only_fields = ('created_at',)
 
 class SwapRequestSerializer(serializers.ModelSerializer):
@@ -112,19 +98,7 @@ class SwapRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SwapRequest
-        fields = [
-            'id',
-            'requester',
-            'provider',
-            'offer',
-            'message',
-            'status',
-            'created_at',
-            'updated_at',
-            'requester_id',
-            'provider_id',
-            'offer_id',
-        ]
+        fields = ['id', 'requester', 'provider', 'offer', 'message', 'status', 'created_at', 'updated_at', 'requester_id', 'provider_id', 'offer_id']
         read_only_fields = ('created_at', 'updated_at')
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -150,35 +124,29 @@ class ReviewSerializer(serializers.ModelSerializer):
         required=False
     )
 
-
     class Meta:
         model = Review
-        fields = [
-            'id',
-            'reviewer',
-            'reviewee',
-            'teaching_offer',
-            'rating',
-            'comment',
-            'created_at',
-            'updated_at',
-            'reviewer_id',
-            'reviewee_id',
-            'teaching_offer_id',
-        ]
+        fields = ['id', 'reviewer', 'reviewee', 'teaching_offer', 'rating', 'comment', 'created_at', 'updated_at', 'reviewer_id', 'reviewee_id', 'teaching_offer_id']
         read_only_fields = ('created_at', 'updated_at')
+
+# Detailed serializer: adds rating & reviews
+class SkillDetailSerializer(SkillSerializer):
+    rating = serializers.SerializerMethodField()
+    reviews = ReviewSerializer(source='review_set', many=True, read_only=True)
+
+    class Meta(SkillSerializer.Meta):
+        fields = SkillSerializer.Meta.fields + ['rating', 'reviews']
+
+    def get_rating(self, obj):
+        qs = obj.review_set.all()
+        if not qs:
+            return 0
+        return sum(r.rating for r in qs) / qs.count()
 
 class ConversationSerializer(serializers.ModelSerializer):
     participants = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Conversation
-        fields = [
-            'id',
-            'participants',
-            'created_at',
-            'updated_at',
-        ]
+        fields = ['id', 'participants', 'created_at', 'updated_at']
         read_only_fields = ('created_at', 'updated_at')
-
-

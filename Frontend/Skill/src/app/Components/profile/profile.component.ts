@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
-import { SkillServiceService } from '../../Service/skill-service.service';
-import {SkillCategory} from '../../modules/SkillCategory';
-import {FormsModule} from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SkillServiceService } from '../../Service/skill-service.service';
+import { SkillCategory } from '../../modules/SkillCategory';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile.component.html',
-  imports: [
-    FormsModule, CommonModule, RouterLink
-  ],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
@@ -19,24 +18,43 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   errorMessage: string | null = null;
-  allCategories: SkillCategory[] = [];// для выпадающего списка навыков
-  selectedSkillId: number | null = null; // выбранный навык
+  allCategories: SkillCategory[] = [];
+  selectedSkillId: number | null = null;
 
-  constructor(private skillService: SkillServiceService, private router: Router) {}
+  // New features state
+  offers: any[] = [];
+  reviews: any[] = [];
+  rating: number = 0;
+
+  private skillService = inject(SkillServiceService);
+  private router = inject(Router);
 
   ngOnInit(): void {
-    const username = localStorage.getItem('username');
-    if (!username) { this.router.navigate(['/login']); return; }
-    this.loadUserProfile(username);
-    // подгружаем категории как список для выбора skill
-    this.skillService.getSkillCategories().subscribe(c=> this.allCategories=c);
+    this.loadInitialData();
   }
 
-  loadUserProfile(username: string) {
+  private loadInitialData() {
+    const username = localStorage.getItem('username');
+    if (!username) { this.router.navigate(['/login']); return; }
+
+    // load profile
     this.skillService.getUserProfile(username).subscribe({
-      next: data => this.user = data,
+      next: data => {
+        this.user = data;
+        this.selectedSkillId = data.skill?.id || null;
+        this.computeRating();
+      },
       error: () => this.errorMessage = 'Не удалось загрузить профиль.'
     });
+
+    // load categories
+    this.skillService.getSkillCategories().subscribe(c => this.allCategories = c);
+
+    // load user's teaching offers
+    this.skillService.getUserOffers(username).subscribe((o: any[]) => this.offers = o);
+
+    // load reviews separately (if service has method)
+    this.skillService.getUserReviews(username).subscribe((r: any[]) => this.reviews = r);
   }
 
   onFileSelected(e: Event) {
@@ -50,6 +68,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile() {
+    this.errorMessage = null;
     if (!this.user.first_name || !this.user.last_name) {
       this.errorMessage = 'Заполните имя и фамилию.';
       return;
@@ -61,31 +80,28 @@ export class ProfileComponent implements OnInit {
     if (this.selectedFile) fd.append('profile_picture', this.selectedFile, this.selectedFile.name);
     if (this.selectedSkillId) fd.append('skill', this.selectedSkillId.toString());
 
-    const username = this.user.username;
-    this.skillService.updateUserProfile(username, fd).subscribe({
+    this.skillService.updateUserProfile(this.user.username, fd).subscribe({
       next: () => {
-        alert('Профиль сохранён');
         this.editMode = false;
         this.previewUrl = null;
-        this.loadUserProfile(username);
+        this.loadInitialData();
       },
       error: () => this.errorMessage = 'Ошибка при сохранении.'
     });
   }
 
   logout(): void {
-    // Удаляем всё, что связано с пользователем
-    // Можно очистить весь localStorage, если больше нечего хранить:
-    // localStorage.clear();
-
-    // Редирект на страницу логина
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 
-  // устанавливаем навык из select
   onSkillChange(id: string) {
     this.selectedSkillId = +id;
   }
 
-  protected readonly HTMLSelectElement = HTMLSelectElement;
+  private computeRating() {
+    const qs = this.user.reviews || [];
+    if (!qs.length) { this.rating = 0; return; }
+    this.rating = qs.reduce((sum: number, r: any) => sum + r.rating, 0) / qs.length;
+  }
 }

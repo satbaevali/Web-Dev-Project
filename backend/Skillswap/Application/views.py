@@ -16,11 +16,22 @@ from .serializer import (
     SkillSerializer,
     TeachingOfferSerializer,
     LearningRequestSerializer,
-    SwapRequestSerializer
+    SwapRequestSerializer, SkillDetailSerializer
 )
 
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
+
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all().select_related('category')
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = SkillFilter
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return SkillDetailSerializer
+        return SkillSerializer
 
 
 class SkillCategoryViewSet(viewsets.ModelViewSet):

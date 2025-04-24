@@ -1,47 +1,58 @@
 <div class="profile-header">
   <a routerLink="/home" class="back-home">
-    <h3 class="logo">SkillWay</h3>
+    <img src="assets/logo.png" alt="SkillWay" class="logo-img"/>
+    <span class="logo-text">SkillWay</span>
   </a>
 </div>
+
 <div class="profile-container">
-  <ng-container *ngIf="!editMode; else editTpl">
-    <h2>Профиль</h2><hr>
-    <p><strong>Имя:</strong> {{user.first_name}} {{user.last_name}}</p>
-    <p><strong>Email:</strong> {{user.email}}</p>
-    <p><strong>Навык:</strong> {{ user.skill?.name || '—' }}</p>
-    <p><strong>Bio:</strong> {{user.bio || '—'}}</p>
-    <img *ngIf="user.profile_picture" [src]="user.profile_picture" width="120" style="border-radius:8px;"/>
-    <button (click)="editMode=true">Редактировать</button>
-  </ng-container>
-
-
-  <div class="profile-actions">
-    <button class="btn-logout" (click)="logout()">Выйти из аккаунта</button>
+  <div class="tabs">
+    <button (click)="editMode=false" [class.active]="!editMode">Просмотр</button>
+    <button (click)="editMode=true" [class.active]="editMode">Редактировать</button>
   </div>
 
+  <ng-container *ngIf="!editMode; else editTpl">
+    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Навык:</strong> {{ user.skill?.name || '—' }}</p>
+    <p><strong>Bio:</strong> {{ user.bio || '—' }}</p>
+    <div class="rating-block">
+      <span *ngFor="let s of [1,2,3,4,5]">
+        <i class="star" [class.filled]="s <= rating">★</i>
+      </span>
+      <span>{{ rating.toFixed(1) }}/5</span>
+    </div>
+    <div class="offers" *ngIf="offers.length">
+      <h3>Мои предложения:</h3>
+      <ul><li *ngFor="let o of offers">{{ o.skill.name }} — {{ o.description }}</li></ul>
+    </div>
+    <div class="reviews" *ngIf="reviews.length">
+      <h3>Отзывы:</h3>
+      <div *ngFor="let r of reviews" class="review">
+        <strong>{{ r.reviewer }}</strong>: {{ r.comment }}
+      </div>
+    </div>
+    <button class="btn-logout" (click)="logout()">Выйти</button>
+  </ng-container>
+
   <ng-template #editTpl>
-    <h2>Редактировать профиль</h2>
-    <form (ngSubmit)="updateProfile()">
-      <!-- поля как раньше, плюс select для skill -->
-      <div>
-        <label>Навык:</label>
+    <form (ngSubmit)="updateProfile()" class="edit-form">
+      <label>Имя:<input type="text" [(ngModel)]="user.first_name" name="first_name"/></label>
+      <label>Фамилия:<input type="text" [(ngModel)]="user.last_name" name="last_name"/></label>
+      <label>Email:<input type="email" [(ngModel)]="user.email" name="email"/></label>
+      <label>Навык:
         <select
           (change)="onSkillChange($any($event.target).value)"
           [value]="user.skill?.id"
         >
           <option *ngFor="let c of allCategories" [value]="c.id">{{c.name}}</option>
         </select>
-      </div>
-      <!-- поле фото -->
-      <div>
-        <label>Фото:</label>
-        <input type="file" (change)="onFileSelected($event)"/>
-      </div>
-      <div *ngIf="previewUrl"><img [src]="previewUrl" width="100"/></div>
-      <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+      </label>
+      <label>Bio:<textarea [(ngModel)]="user.bio" name="bio"></textarea></label>
+      <label>Фото:<input type="file" (change)="onFileSelected($event)"/></label>
+      <div *ngIf="previewUrl"><img [src]="previewUrl" class="preview"/></div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <button type="submit">Сохранить</button>
-      <button type="button" (click)="editMode=false">Отмена</button>
     </form>
   </ng-template>
-
 </div>
